@@ -1,4 +1,5 @@
-library for reading V.A.G. 3lb line from radio
+arduino library for reading V.A.G. FIS / DIS 3lb line from radio / navigation
+
 
 input are 3lines: ena/data/clk
 
