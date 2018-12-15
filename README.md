@@ -107,7 +107,7 @@ with level shifter interla pullups are 10k for this shifter:
                 	 GND                            GND
 
 
-more from russion forum passatworld.ru translated on google:
+more from russian forum passatworld.ru translated on google:
 
 Data transmission is carried out on 3 lines (Data, Clock, Enable). Working voltage on 5V lines.
 Data and Clock lines are unidirectional, line management is performed by the master device. The default lines are high.
