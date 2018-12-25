@@ -77,11 +77,11 @@ void VAGFISReader::readDataLine(){ //fired on falling edge
     data[msgbit/8] = (data[msgbit/8]<<1) | 1;
   }
   if(preNavi) {
-	if (((msgbit+1)%8) == 0 ){ //each 8bit we have to put ena low and back high..
+	if (((msgbit+1)%8) == 0 ){ //each 8th bit we have to put ena low and back high..
 		digitalWrite(FIS_READ_ENA,LOW);
 		delayMicroseconds(100);
-		if(msgbit == 15){
-			packetSize = data[1] + 2;
+		if(msgbit == 15){ //we know packet size, cose 2dn byte(data[1]) is size of packet 
+			packetSize = data[1] + 2; //+2 for id and actual packet with packet size 
 		}
 		if ((msgbit+1) != packetSize*8){
 			digitalWrite(FIS_READ_ENA,HIGH); //based on data[1]+2 which is packet size +id+actual byte with packet size, we can calculate if we need another byte receive
