@@ -39,8 +39,6 @@ Unfortunately, in this mode, it is not possible to control the transmitted data.
 // do not forget to put pull down resistor on enable line
 // pull up on data/clk line is made usng internal pullup
 
-
-
 /**
    Constructor
 */
@@ -58,9 +56,9 @@ VAGFISReader::~VAGFISReader(){}
 
 void VAGFISReader::begin()
 {
-  //delay (2000);
   pinMode(FIS_READ_CLK,INPUT_PULLUP);
   pinMode(FIS_READ_DATA,INPUT_PULLUP);
+  digitalWrite(FIS_READ_ENA,LOW);
   pinMode(FIS_READ_ENA,INPUT);//no pull up! this is inactive state low, active is high
   digitalWrite(FIS_READ_ENA,LOW);
   attachInterrupt(digitalPinToInterrupt(FIS_READ_ENA),&VAGFISReader::detectEnaLineRising,RISING);
@@ -86,6 +84,8 @@ void VAGFISReader::readDataLine(){ //fired on falling edge
 		if ((msgbit+1) != packetSize*8){
 			digitalWrite(FIS_READ_ENA,HIGH); //based on data[1]+2 which is packet size +id+actual byte with packet size, we can calculate if we need another byte receive
 		} else {	
+			detachInterrupt(digitalPinToInterrupt(FIS_READ_CLK));
+  			digitalWrite(FIS_READ_ENA,LOW);
 			pinMode(FIS_READ_ENA,INPUT);
 			digitalWrite(FIS_READ_ENA,LOW); //pull down, just in case
 			attachInterrupt(digitalPinToInterrupt(FIS_READ_ENA),&VAGFISReader::detectEnaLineRising,RISING); //standard start scenario
@@ -94,13 +94,21 @@ void VAGFISReader::readDataLine(){ //fired on falling edge
 			if (checkData()) //check cksum...
        	        	        newMsgFromRadio=1;
 			detachInterrupt(digitalPinToInterrupt(FIS_READ_CLK));
-			} 
+		} 
+//		if (msgbit > packetSize*8){
+//			msgbit=0;
+//			preNavi=0;
+//			digitalWrite(FIS_READ_ENA,LOW);
+//			attachInterrupt(digitalPinToInterrupt(FIS_READ_ENA),&VAGFISReader::detectEnaLineRising,RISING); //standard start scenario
+//			detachInterrupt(digitalPinToInterrupt(FIS_READ_CLK));
+//		}
 	}
   }
 msgbit++;
 }
 
 void VAGFISReader::detectEnaLineRising(){
+if(digitalRead(FIS_READ_ENA)){
 	msgbit=0;
 	newMsgFromRadio=0;
 	navi=0;
@@ -109,11 +117,14 @@ void VAGFISReader::detectEnaLineRising(){
 	attachInterrupt(digitalPinToInterrupt(FIS_READ_CLK),&VAGFISReader::readDataLine,FALLING);//data are valid on falling edge of FIS_READ_CLK 
 	attachInterrupt(digitalPinToInterrupt(FIS_READ_ENA),&VAGFISReader::detectEnaLineFalling,FALLING); //if enable changed to low, data on data line are no more valid
 }
+}
 
 void VAGFISReader::detectEnaLineFalling(){
+if(!digitalRead(FIS_READ_ENA)){
   detachInterrupt(digitalPinToInterrupt(FIS_READ_ENA));
   detachInterrupt(digitalPinToInterrupt(FIS_READ_CLK));
   packetSize=0;
+
   if(msgbit>0){
 	packetSize = msgbit/8;
 	if (packetSize > 1){ //NAVI start with just 1 packet so if we have more then 1 here, we are safe to zero msbit variable
@@ -126,6 +137,7 @@ void VAGFISReader::detectEnaLineFalling(){
 			packetSize=0;
 	    		attachInterrupt(digitalPinToInterrupt(FIS_READ_CLK),&VAGFISReader::readDataLine,FALLING);//data are valid on falling edge of FIS_READ_CLK 
 			preNavi=1;
+			digitalWrite(FIS_READ_ENA,LOW);
 			pinMode(FIS_READ_ENA,OUTPUT);
 			digitalWrite(FIS_READ_ENA,LOW);
 			delayMicroseconds(5);
@@ -136,6 +148,7 @@ void VAGFISReader::detectEnaLineFalling(){
   else {
 	attachInterrupt(digitalPinToInterrupt(FIS_READ_ENA),&VAGFISReader::detectEnaLineRising,RISING);
 	}
+}
 }
 
 bool VAGFISReader::hasNewMsg(){
@@ -210,3 +223,29 @@ bool VAGFISReader::calcChecksum(){
 uint8_t VAGFISReader::getChecksum(){
 	return data[packetSize-1];
 }
+
+bool VAGFISReader::msgIsRadioText(){
+if (data[0] == 0x81) return true;
+return false;
+}
+
+bool VAGFISReader::msgIsText(){
+if (data[0] == 0x56 ) return true;
+return false;
+}
+
+bool VAGFISReader::msgIsGraphics(){
+if (data[0] == 0x55) return true;
+return false;
+}
+
+bool VAGFISReader::msgIsInit(){
+if (data[0] == 0x53) return true;
+return false;
+}
+
+bool VAGFISReader::msgIsKeepAlive(){
+if (data[0] == 0xC3) return true;
+return false;
+}
+

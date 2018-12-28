@@ -188,6 +188,12 @@ public:
 	static bool checkData();
 	static bool calcChecksum();
 	static uint8_t getChecksum();
+	bool msgIsRadioText();
+	bool msgIsText();
+	bool msgIsGraphics();
+	bool msgIsInit();
+	bool msgIsKeepAlive();
+
 private:
 static void readDataLine();
 static void detectEnaLineRising();

@@ -1,5 +1,6 @@
 arduino library for reading V.A.G. FIS / DIS 3lb line from radio / navigation
 
+<iframe width="1280" height="743" src="https://www.youtube.com/embed/_Gfd5EC4pqc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 input are 3lines: ena/data/clk
 
