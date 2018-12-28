@@ -9,7 +9,7 @@
 
 WHAT IS FULLY TESTED:
 
-radio mode on Arduino Nano (328) 5Vmode with internall pullups
+full screen mode and radio mode on Arduino Nano (328) 5Vmode with internall pullups
 radio mode on stm32 (bluepill board) over 3v resistor divider (10k/47k) with 10k pullup on data and clk line, these pull up are required! I check lot of schematics of radios, and most of them do not have internall pullups(using open colector here), so if it works without nice ,but mostly it will not.
 In case of 5V board (AVR MCU) internal pull up is used, in case of 3v3 mcu external pull up + divider is erquired, if transistor based level shifter with internal pullup is used, check what value are these pullups and make stronger pulldown (half value resistor will do) on both low a high level side of ENABLE line(tested with mosfet based level shifter)
 

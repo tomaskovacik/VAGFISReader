@@ -3,7 +3,7 @@
  * https://github.com/tomaskovacik/
  * GNU GPL3
  * 
- * tested on stm32 
+ * tested on stm32,atmega328
  */
 
 /* info from passatworld.ru regarding 3lb:
