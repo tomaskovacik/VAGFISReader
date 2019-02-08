@@ -30,65 +30,70 @@ radio mode: master make 100us pulse on ENABLE line, i did not know why, maybe it
 
 schematics for 3V3 MCU:
 
+RADIO ENA
 
- RADIO_ENA o-----| 10k |-------+----------------------o MCU 
-                               |
-                              ---
-                              | |
-                              47k
-                              | |
-                              ---
-                               |
-                              _|_
-                              GND
 
+        o-----| 10k |-------+----------------------o MCU 
+                            |
+                           ---
+                           | |
+                           47k
+                           | |
+                           ---
+                            |
+                           _|_
+                           GND
+
+
+RADIO DATA:
 
                              
-	         +5V
-                  o
-                  |
-                 ---
-                 | |
-                 10k
-                 | |
-                 ---
-                  |
- RADIO_DATA o-----+---| 10k |-----+--------------------0 MCU
-                                  |
-                                 ---
-                                 | |
-                                 47k
-                                 | |
-                                 ---
-                                  |
-                                 _|_
-                                 GND
+	     +5V
+              o
+              |
+             ---
+             | |
+             10k
+             | |
+             ---
+              |
+        o-----+---| 10k |-----+--------------------0 MCU
+                              |
+                             ---
+                             | |
+                             47k
+                             | |
+                             ---
+                              |
+                             _|_
+                             GND
+
+RADIO CLK:
+
+             +5V
+              o
+              |
+             ---
+             | |
+             10k
+             | |
+             ---
+              |
+        o-----+---| 10k |-----+--------------------0 MCU
+                              |
+                             ---
+                             | |
+                             47k
+                             | |
+                             ---
+                              |
+                             _|_
+                             GND
 
 
-                +5V
-                 o
-                 |
-                ---
-                | |
-                10k
-                | |
-                ---
-                 |
- RADIO_CLK o-----+---| 10k |-----+--------------------0 MCU
-                                 |
-                                ---
-                                | |
-                                47k
-                                | |
-                                ---
-                                 |
-                                _|_
-                                GND
 
 
-
-
-with level shifter internal pullups are 10k,so for this shifter we need to pul stronger pull done on enalble line
+with level shifter interla pullups are 10k for this shifter:
 
 
 	RADIO DATA   o---------|5V  level shift 3V3|-----------o MCU
