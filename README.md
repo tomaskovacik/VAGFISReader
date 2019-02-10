@@ -12,14 +12,19 @@ interupt on ena: rising edge enable falling edge detection on clk like
 
 interupt on CLK line read data lina value and store it as input packet
 
-packet overvie: http://kovo-blog.blogspot.sk/2013/11/audi-fis-3-line-protocol.html
+packet overview: http://kovo-blog.blogspot.sk/2013/11/audi-fis-3-line-protocol.html
 
 
-FULLY TESTED: full fis mode on atmega328,radio mode on stm32 (bluepill board) over 3v resistor devider (10k to 47k) with 10k pullup on data and clk line, these pull up are required! I checked lot of schematics of radios, and most of them do not have internall pullups, so if it works without nice ,but mostly it will not. In case of 5V board (AVR MCU) internal pull up is ok, in case of 3v3 mcu external pull up + divider is erquired, if transistor based level shifter with internal pullup is used, check what value are these pullups and make stronger pulldown (half value resistor will do) on both low a high level side of ENABLE line (tested with mosfet based level shifter)
+FULLY TESTED: 
+ * full fis mode on atmega328
+ * radio mode on stm32 (bluepill board) 
+ 
+
+For information how to connect radio to mcu see this [wiki page](https://github.com/tomaskovacik/VAGFISReader/wiki/How-to-connect).
 
 
 
-  how it works:
+ How it works:
 
 	3lb: 3line protocol (invert logic)
 		data: 5V logic, 0v=logic 1, 5V=logic 0
@@ -27,85 +32,6 @@ FULLY TESTED: full fis mode on atmega328,radio mode on stm32 (bluepill board) ov
 		ena: 5V logic, inverted CS, bidirectional, in radio mode, only maste use this line, NAVI 
 
 radio mode: master make 100us pulse on ENABLE line, i did not know why, maybe it's just bug or something in blaupunk mcu(I use audi concert radio) , then goes ENABLE high and begin transfer on data/clk line 
-
-schematics for 3V3 MCU:
-
-
-     RADIO ENA  o-----| 10k |-------+----------------------o MCU 
-                                    |
-                                   ---
-                                   | |
-                                   47k
-                                   | |
-                                   ---
-                                    |
-                                   _|_
-                                   GND
-
-
-                             
-	                 +5V
-                      o
-                      |
-                     ---
-                     | |
-                     10k
-                     | |
-                     ---
-                      |
-    RADIO DATA: o-----+---| 10k |-----+--------------------0 MCU
-                                      |
-                                     ---
-                                     | |
-                                     47k
-                                     | |
-                                     ---
-                                      |
-                                     _|_
-                                    GND
-
-
-                   +5V
-                    o
-                    |
-                   ---
-                   | |
-                   10k
-                   | |
-                   ---
-                    |
-     RADIO CLK o-----+---| 10k |-----+--------------------0 MCU
-                                    |
-                                   ---
-                                   | |
-                                   47k
-                                   | |
-                                   ---
-                                    |
-                                   _|_
-                                   GND
-
-
-
-
-with level shifter: internal pullups are 10k, so for this shifter we need to add stronger pulldown on enable line
-
-
-	RADIO DATA   o---------|5V  level shift 3V3|-----------o MCU
-
-	RADIO CLK    o---------|5V  level shift 3V3|-----------o MCU
-
-	RADIO ENABLE o----+----|5V  level shift 3V3|-----+-----o MCU
-	                  |                              |
-        	         ---                            ---
-                	 | |                            | |
-	                 4k3                            4k3
-        	         | |                            | |
-                	 ---                            ---
-	                  |                              |
-        	         _|_                            _|_
-                	 GND                            GND
-
 
 more from russian forum passatworld.ru translated on google:
 
