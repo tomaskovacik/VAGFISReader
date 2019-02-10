@@ -12,7 +12,7 @@ interupt on ena: rising edge enable falling edge detection on clk like
 
 interupt on CLK line read data lina value and store it as input packet
 
-packet overview: http://kovo-blog.blogspot.sk/2013/11/audi-fis-3-line-protocol.html
+Packet overview in radio mode: http://kovo-blog.blogspot.sk/2013/11/audi-fis-3-line-protocol.html
 
 
 FULLY TESTED: 
