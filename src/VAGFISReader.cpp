@@ -164,7 +164,7 @@ uint8_t VAGFISReader::readData(int8_t id){
 bool VAGFISReader::request(){
 	pinMode(FIS_READ_ENA,INPUT);
 if (!digitalRead(FIS_READ_ENA)) {//safe to ack/request another packet from radio	
-	detachInterrupt((FIS_READ_ENA));
+	detachInterrupt(digitalPinToInterrupt(FIS_READ_ENA));
 	pinMode(FIS_READ_ENA,OUTPUT);
 	digitalWrite(FIS_READ_ENA,HIGH);
 	delay(3);
