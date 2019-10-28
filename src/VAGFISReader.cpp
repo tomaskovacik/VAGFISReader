@@ -58,9 +58,7 @@ void VAGFISReader::begin()
 {
   pinMode(FIS_READ_CLK,INPUT_PULLUP);
   pinMode(FIS_READ_DATA,INPUT_PULLUP);
-  digitalWrite(FIS_READ_ENA,LOW);
   pinMode(FIS_READ_ENA,INPUT);//no pull up! this is inactive state low, active is high
-  digitalWrite(FIS_READ_ENA,LOW);
   attachInterrupt(digitalPinToInterrupt(FIS_READ_ENA),&VAGFISReader::detectEnaLineRising,RISING);
 };
 
@@ -164,6 +162,7 @@ uint8_t VAGFISReader::readData(int8_t id){
 }
 
 bool VAGFISReader::request(){
+	pinMode(FIS_READ_ENA,INPUT);
 if (!digitalRead(FIS_READ_ENA)) {//safe to ack/request another packet from radio	
 	detachInterrupt((FIS_READ_ENA));
 	pinMode(FIS_READ_ENA,OUTPUT);
@@ -174,6 +173,7 @@ if (!digitalRead(FIS_READ_ENA)) {//safe to ack/request another packet from radio
 	attachInterrupt(digitalPinToInterrupt(FIS_READ_ENA),&VAGFISReader::detectEnaLineRising,RISING);
 	return true;
 } else {
+	attachInterrupt(digitalPinToInterrupt(FIS_READ_ENA),&VAGFISReader::detectEnaLineRising,RISING);
 	return false;
 }
 }
