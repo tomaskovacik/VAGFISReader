@@ -8,9 +8,11 @@ Video of capturing navi:
 
 input are 3lines: ena/data/clk
 
-interupt on ena: rising edge enable falling edge detection on clk like
+interupt on ena: rising edge on ENA line then enable "falling edge detection" on clk like
 
-interupt on CLK line read data lina value and store it as input packet
+interupt on CLK line is used to read "data" line value and store it as input packet buffer
+
+External pull down on enable (ENA) line are required (4k7 resistor to ground)
 
 Packet overview in radio mode: http://kovo-blog.blogspot.sk/2013/11/audi-fis-3-line-protocol.html
 
@@ -18,8 +20,8 @@ Packet overview in radio mode: http://kovo-blog.blogspot.sk/2013/11/audi-fis-3-l
 FULLY TESTED: 
  * full fis mode on atmega328
  * radio mode on stm32 (bluepill board) 
- 
-
+ * ATMEGA324
+ * ATMEGA2560 
 For information how to connect radio to mcu see this [wiki page](https://github.com/tomaskovacik/VAGFISReader/wiki/How-to-connect).
 
 Here is link to [wiki page](https://github.com/tomaskovacik/VAGFISReader/wiki/Theory-of-operation) talking about theory of operation.
