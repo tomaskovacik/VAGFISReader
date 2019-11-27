@@ -26,7 +26,7 @@ BASICS:
 RADIO MODE:
 
 REFRESH:
-packet from master (radio) is sent after event when text on extenal display need to be changed, otherwise cluster request data to be refreshed each 5s with 3ms high pulse on ENA line, see example
+packet from master (radio) is sent after event when text on extenal display need to be changed, cluster  ack received data by 3ms high pulse on ENA line, see example
 
 ACTUAL PACKET CONSIST OF: 
 - master make 100us pulse on ENABLE line, i did not know why, maybe it's just bug or something in blaupunk mcu(I use audi concert radio)
@@ -155,8 +155,8 @@ There is one more option for data transfer in which the master raises the Enable
 It is necessary to pause between bytes of approximately 80-100us. And also to pause at least 4-5ms between packets, especially if packets go on continuously.
 Unfortunately, in this mode, it is not possible to control the transmitted data. A slave may simply not accept the package, and the master will not know about it.
 
+*/
 
- */
 #ifndef VAGFISReader_h
 #define VAGFISReader_h
 
@@ -167,7 +167,7 @@ volatile static uint8_t navi=0;
 volatile static uint8_t newMsgFromRadio=0;
 volatile static uint8_t packetSize=0;
 volatile static uint8_t preNavi=0;
-volatile static uint8_t data[255] ;
+volatile static uint8_t data[64] ;
 static uint8_t FIS_READ_CLK;
 static uint8_t FIS_READ_DATA;
 static uint8_t FIS_READ_ENA;
@@ -182,7 +182,7 @@ public:
 	bool hasNewMsg();
 	bool msgIsNavi();
 	void clearNewMsgFlag();
-	bool request(); //3ms pulse on ENA line after 5s 
+	bool ACK(); //3ms pulse on ENA line by cluster to ACK received packet
 	uint8_t getMsgId();
 	uint8_t getSize();
 	static bool checkData();
@@ -193,6 +193,8 @@ public:
 	bool msgIsGraphics();
 	bool msgIsInit();
 	bool msgIsKeepAlive();
+	bool _wait();
+	bool _continue();
 
 private:
 static void readDataLine();

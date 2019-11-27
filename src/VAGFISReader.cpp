@@ -161,7 +161,7 @@ uint8_t VAGFISReader::readData(int8_t id){
 		return data[id];
 }
 
-bool VAGFISReader::request(){
+bool VAGFISReader::ACK(){
 	pinMode(FIS_READ_ENA,INPUT);
 if (!digitalRead(FIS_READ_ENA)) {//safe to ack/request another packet from radio	
 	detachInterrupt(digitalPinToInterrupt(FIS_READ_ENA));
@@ -203,6 +203,7 @@ uint8_t VAGFISReader::getSize(){
 }
 
 bool VAGFISReader::calcChecksum(){
+
 	uint8_t tmp=0;
 	if (!navi){
 		for (uint8_t i=0;i<17;i++){
