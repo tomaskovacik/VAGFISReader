@@ -70,7 +70,7 @@ void loop() {
   }
 
     if ((millis() - last_update) > 100) {
-      radio_read.request();
+      radio_read.ACK();
       last_update = millis();
     }
 }
