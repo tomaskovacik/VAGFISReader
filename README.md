@@ -22,6 +22,7 @@ FULLY TESTED:
  * radio mode on stm32 (bluepill board) 
  * ATMEGA324
  * ATMEGA2560 
+ 
 For information how to connect radio to mcu see this [wiki page](https://github.com/tomaskovacik/VAGFISReader/wiki/How-to-connect).
 
 Here is link to [wiki page](https://github.com/tomaskovacik/VAGFISReader/wiki/Theory-of-operation) talking about theory of operation.
